@@ -218,6 +218,7 @@ func exp_build_box(offset = Vector3(0,0,0)):
 	
 	StaticMeshBuilder.begin(4)
 	
+	StaticMeshBuilder.add_smooth_group(false)
 	StaticMeshBuilder.add_quad(exp_build_plane_verts(foward_dir, rigth_dir, offset))
 	StaticMeshBuilder.add_quad(exp_build_plane_verts(rigth_dir, up_dir, offset))
 	StaticMeshBuilder.add_quad(exp_build_plane_verts(up_dir, foward_dir, offset))
@@ -252,12 +253,14 @@ func exp_build_cylinder(heigth, segments, caps = true):
 	var min_pos = Vector3(0,heigth * -1,0)
 	
 	if caps:
+		StaticMeshBuilder.add_smooth_group(false)
 		for idx in range(segments - 1):
 			StaticMeshBuilder.add_tri([Vector3(0,float(heigth)/2,0), circle[idx + 1], circle[idx]])
 			StaticMeshBuilder.add_tri([min_pos * 0.5, circle[idx + 1] + min_pos, circle[idx] + min_pos], true)
 		StaticMeshBuilder.add_tri([Vector3(0,float(heigth)/2,0), circle[0], circle[segments - 1]])
 		StaticMeshBuilder.add_tri([min_pos * 0.5, circle[0] + min_pos, circle[segments - 1] + min_pos], true)
 	
+	StaticMeshBuilder.add_smooth_group(true)
 	for idx in range(segments - 1):
 		StaticMeshBuilder.add_quad([circle[idx] + min_pos, circle[idx + 1], circle[idx], circle[idx + 1] + min_pos], true)
 	StaticMeshBuilder.add_quad([circle[0] + min_pos, circle[segments - 1], circle[0], circle[segments - 1] + min_pos])
@@ -280,7 +283,7 @@ func exp_build_heigthmap(size = 50, res = 32):
 			verts[i] += [Vector3(i * res_size, randf(5), j * res_size)]
 	
 	StaticMeshBuilder.begin(4)
-	
+	StaticMeshBuilder.add_smooth_group(true)
 	for i in range(res):
 		for j in range(res):
 			StaticMeshBuilder.add_quad([verts[i+1][j] + origin,\
